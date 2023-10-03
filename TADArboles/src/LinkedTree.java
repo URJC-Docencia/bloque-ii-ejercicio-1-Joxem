@@ -125,13 +125,14 @@ public class LinkedTree<E> extends DrawableTree<E> {
     @Override
     public void remove(Position<E> p) {
         TreeNode<E> node = checkPosition(p);
-        if (root == null){
-            root = null;
+        if (node == this.root){
+            this.root = null;
             size = 0;
         }else{
-            TreeNode<E> parent = node.getParent();
-            parent.getChildren().remove(node);
-            size -= computeSize(node);
+            TreeNode<E> parent = checkPosition(node.getParent());
+            List<TreeNode<E>> hijos = parent.getChildren();
+            this.size -= computeSize(node);
+            hijos.remove(node);
         }
     }
     private int computeSize(TreeNode<E> node){
@@ -164,32 +165,36 @@ public class LinkedTree<E> extends DrawableTree<E> {
 
     @Override
     public Position<E> root() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return root;
     }
 
     @Override
     public Position<E> parent(Position<E> v) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return checkPosition(v).getParent();
     }
 
     @Override
     public Iterable<? extends Position<E>> children(Position<E> v) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return checkPosition(v).getChildren();
     }
 
     @Override
     public boolean isInternal(Position<E> v) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        TreeNode<E> node = checkPosition(v);
+        if (node.getParent() != null && node.getChildren() != null){
+            return true;
+        }else
+            return false;
     }
 
     @Override
     public boolean isLeaf(Position<E> v) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return checkPosition(v).getChildren().isEmpty();
     }
 
     @Override
     public boolean isRoot(Position<E> v) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return checkPosition(v).getParent() == null;
     }
 
     @Override
@@ -207,7 +212,7 @@ public class LinkedTree<E> extends DrawableTree<E> {
             while(!queue.isEmpty()){
                 TreeNode<E> toExplore = queue.remove(0);
                 positions.add(toExplore);
-                queue.addAll(node.getChildren());
+                queue.addAll(toExplore.getChildren());
             }
         }
     }
