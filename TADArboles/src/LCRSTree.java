@@ -1,8 +1,6 @@
 import material.Position;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.*;
 
 
 /**
@@ -88,19 +86,6 @@ public class LCRSTree<E> implements NAryTree<E> {
              throw new RuntimeException("you already have  a root");
     }
 
-    //@Override
-   /* public Position<E> add(E element, Position<E> p) {
-        LCRSnode<E> padre = checkPosition(p);
-        LCRSnode<E> newNode = new LCRSnode<>(element, padre);
-        if (padre.getKids() == null){
-            padre.setKids(newNode);
-        }else{
-            padre.getKids().setBros(newNode);
-        }
-        size++;
-        return newNode;
-
-    }*/
     @Override
     public Position<E> add(E element, Position<E> p) {
         LCRSnode<E> padre = checkPosition(p);
@@ -150,17 +135,38 @@ public class LCRSTree<E> implements NAryTree<E> {
 
     @Override
     public void swapElements(Position<E> p1, Position<E> p2) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        E element = p1.getElement();
+        replace(p1, p2.getElement());
+        replace(p2, element);
     }
 
     @Override
     public E replace(Position<E> p, E e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        LCRSnode<E> original = checkPosition(p);
+        E antiguo = original.getElement();
+        original.setElement(e);
+        return antiguo;
     }
 
     @Override
     public void remove(Position<E> p) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       LCRSnode<E> node = checkPosition(p);
+        if (node == this.root){
+            this.root = null;
+            size = 0;
+        }else{
+            LCRSnode<E> parent = checkPosition(node.getParent());
+            if (node.getBros() == null && node.getKids() == null && parent.getKids() == node){
+                parent.setKids(null);
+                size--;
+            }else if(isInternal(p)){
+                //indicar el bro anterior, y luego anterio.setbro(anterior.getbro.getbro) y asi desvinculo el del centro
+
+
+
+
+            }
+        }
     }
 
     @Override
@@ -222,9 +228,30 @@ public class LCRSTree<E> implements NAryTree<E> {
 
     @Override
     public Iterator<Position<E>> iterator() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
+        List<Position<E>> positions = new ArrayList<>();
+        breadthOrder(root, positions);
+        return positions.iterator();
+
+    }
+    private void breadthOrder(LCRSnode<E> node, List<Position<E>> positions) {
+        if (node != null) {
+            List<LCRSnode<E>> queue = new ArrayList<>();
+            queue.add(node);
+            while (!queue.isEmpty()) {
+                LCRSnode<E> toExplore = queue.remove(0);
+                positions.add(toExplore);
+                if (toExplore.getKids() != null) {
+                    LCRSnode<E> hijo = toExplore.getKids();
+                    queue.add(hijo);
+                    while (hijo.getBros() != null) {
+                        queue.add(hijo.getBros());
+                        hijo = hijo.getBros();
+                    }
+                }
+            }
+        }
+    }
     public int size() {
         return size;
     }
