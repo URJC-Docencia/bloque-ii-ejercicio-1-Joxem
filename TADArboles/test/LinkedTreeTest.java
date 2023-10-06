@@ -239,6 +239,26 @@ public class LinkedTreeTest extends TestCase {
         }
         assertEquals(salida.toString(), "CBADEHGFIJKL");
     }
+    public void testIteratorPreOrder(){
+        this.setTree();
+        StringBuilder s = new StringBuilder();
+        var it = this.tree.iteratorPreOrder();
+        while(it.hasNext()){
+            s.append(it.next().getElement());
+        }
+        assertEquals("ABECFGHDIJKL", s.toString());
+    }
+
+
+    public void testIteratorPostOrder(){
+        this.setTree();
+        StringBuilder s = new StringBuilder();
+        var it = this.tree.iteratorPostOrder();
+        while(it.hasNext()){
+            s.append(it.next().getElement());
+        }
+        assertEquals("BEGIJKLHFCDA", s.toString());
+    }
 
 
     public void testReplace() {

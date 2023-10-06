@@ -273,7 +273,6 @@ public class LCRSTreeTest {
         tree.add(11, p3);
         tree.add(12, p3);
 
-
         this.tree.swapElements(p, p1);
         this.tree.swapElements(p2, p3);
 

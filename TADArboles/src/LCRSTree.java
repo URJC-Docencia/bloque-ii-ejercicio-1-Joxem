@@ -83,7 +83,7 @@ public class LCRSTree<E> implements NAryTree<E> {
             size = 1;
             return root;
         }else
-             throw new RuntimeException("you already have  a root");
+             throw new RuntimeException("you already have a root");
     }
 
     @Override
