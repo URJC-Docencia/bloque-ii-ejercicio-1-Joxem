@@ -252,6 +252,42 @@ public class LCRSTree<E> implements NAryTree<E> {
             }
         }
     }
+    /*
+    public Iterator<Position<E>> iteratorPreOrder() {
+        if(isEmpty()){
+            return new ArrayList<Position<E>>().iterator();
+        }
+        List<Position<E>> positions = new ArrayList<>();
+        preOrderTransversal(root, positions);
+        return positions.iterator();
+    }
+    private void preOrderTransversal(LCRSnode<E> node, List<Position<E>> positions){
+        if (node != null){
+            positions.add(node);
+            for (LCRSTree<E> kid : node.getKids()){
+                preOrderTransversal(child, positions);
+            }
+        }
+    }
+
+
+    public Iterator<Position<E>> iteratorPostOrder() {
+        if(isEmpty()){
+            return new ArrayList<Position<E>>().iterator();
+        }
+        List<Position<E>> positions = new ArrayList<>();
+        postOrderTransversal(root, positions);
+        return positions.iterator();
+    }
+    private void postOrderTransversal(LCRSnode<E> node, List<Position<E>> positions){
+        if (node != null){
+            for (LinkedTree.TreeNode<E> child : this.children(positions)){
+                postOrderTransversal(child, positions);
+            }
+            positions.add(node);
+        }
+    }
+    */
     public int size() {
         return size;
     }
